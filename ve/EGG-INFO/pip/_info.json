@@ -1,0 +1,14 @@
+{
+  "arch": null, 
+  "build": 1, 
+  "ctime": "Mon Feb 10 13:49:07 2014", 
+  "hook": false, 
+  "key": "pip-1.0.2-1.egg", 
+  "name": "pip", 
+  "osdist": null, 
+  "packages": [], 
+  "platform": null, 
+  "python": "2.7", 
+  "type": "egg", 
+  "version": "1.0.2"
+}
