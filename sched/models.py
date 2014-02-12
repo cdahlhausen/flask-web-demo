@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy import Boolean, Column
 from sqlalchemy import DateTime, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
+
 Base = declarative_base()
 
 
@@ -14,7 +15,7 @@ class Appointment(Base):
   created = Column(DateTime, default=datetime.now)
   modified = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
-  title = Column(Integer, primary_key=True)
+  title = Column(String(255))
   start = Column(DateTime, nullable=False)
   end = Column(DateTime, nullable=False)
   allday = Column(Boolean, default=False)
@@ -30,65 +31,65 @@ class Appointment(Base):
     return (u'<{self.__class__.__name__}: {self.id}>'.format(self=self))
 
 if __name__ == '__main__':
-  from datetime import timedelta
+    from datetime import timedelta
   
-  from sqlalchemy import create_engine
-  from sqlalchemy.orm import sessionmaker
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
 
-  engine = create_engine('sqlite:///sched.db', echo=True)
+    engine = create_engine('sqlite:///sched.db', echo=True)
 
-  Base.metadata.create_all(engine)
-  Session = sessionmaker(bind=engine)
-  session = Session()
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
-  now = datetime.now()
+    now = datetime.now()
 
-  session.add(Appointment(
-    title = 'Important Meeting',
-    start = now + timedelta(days=3),
-    end = now + timedelta(days=3, seconds=3600),
-    allday = False,
-    location = 'The Office'))
-  session.commit()
+    session.add(Appointment(
+        title = 'Important Meeting',
+        start = now + timedelta(days=3),
+        end = now + timedelta(days=3, seconds=3600),
+        allday = False,
+        location = 'The Office'))
+    session.commit()
 
-  session.add(Appointment(
-    title = 'Past Meeting',
-    start = now - timedelta(days=3),
-    end = now - timedelta(days=3, seconds=3600),
-    allday = False,
-    location = 'The Office'))
-  session.commit()
+    session.add(Appointment(
+        title = 'Past Meeting',
+        start = now - timedelta(days=3),
+        end = now - timedelta(days=3, seconds=3600),
+        allday = False,
+        location = 'The Office'))
+    session.commit()
 
-  session.add(Appointment(
-    title = 'Follow Up',
-    start = now + timedelta(days=4),
-    end = now + timedelta(days=4, seconds=3600),
-    allday = False,
-    location = 'The Office'))
-  session.commit()
+    session.add(Appointment(
+        title = 'Follow Up',
+        start = now + timedelta(days=4),
+        end = now + timedelta(days=4, seconds=3600),
+        allday = False,
+        location = 'The Office'))
+    session.commit()
 
-  session.add(Appointment(
-    title = 'Day Off',
-    start = now + timedelta(days=5),
-    end = now + timedelta(days=5),
-    allday = True,))
-  session.commit()
+    session.add(Appointment(
+        title = 'Day Off',
+        start = now + timedelta(days=5),
+        end = now + timedelta(days=5),
+        allday = True,))
+    session.commit()
 
-  #Create. Add a new model instance to the session.
-  appt = Appointment(
-      title='My Appointment',
-      start=now,
-      end=now + timedelta(seconds=1800),
-      allday=False,)
-  session.add(appt)
-  session.commit()
+    #Create. Add a new model instance to the session.
+    appt = Appointment(
+        title='My Appointment',
+        start=now,
+        end=now + timedelta(seconds=1800),
+        allday=False,)
+    session.add(appt)
+    session.commit()
 
-  #Update. Update the object in place and commit.
-  appt.title = 'Your Appointment'
-  session.commit()
+    #Update. Update the object in place and commit.
+    appt.title = 'Your Appointment'
+    session.commit()
 
-  #Delete. Tell the session to delete the object.
-  session.delete(appt)
-  session.commit()
+    #Delete. Tell the session to delete the object.
+    session.delete(appt)
+    session.commit()
 
 
