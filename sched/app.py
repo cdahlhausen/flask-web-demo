@@ -1,7 +1,15 @@
 from flask import Flask
 from flask import url_for
 
+from flask.ext.sqlalchemy import SQLAlchemy
+from sched.models import Base
+
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://sched.db'
+
+#Use Flask-SQLAlchemy for its engine and session config...
+db = SQLAlchemy(app)
+db.Model = Base
 
 @app.route('/')
 def hello():
@@ -14,6 +22,7 @@ def eggo_hello():
 
 if __name__ == '__main__':
 	app.run(debug=True)
+
 
 @app.route('/appointments/')
 def appointment_list():
